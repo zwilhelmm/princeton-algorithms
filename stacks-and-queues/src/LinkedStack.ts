@@ -1,42 +1,82 @@
 "use strict";
 
 class Node<T> {
-  val: T;
+  val: T | null;
   next: Node<T> | null;
-  constructor(val: T) {
-    this.val = val;
+  constructor() {
+    this.val = null;
     this.next = null;
   }
 }
 
-export default class LinkedStackOfStrings<T> {
-  head: Node<T> | null;
-  size: number;
+export default class Stack<T> {
+  head: Node<T>;
+  n: number;
+
+  /**
+   * Initializes an empty stack.
+   */
   constructor() {
     this.head = null;
-    this.size = 0;
+    this.n = 0;
   }
 
-  public getSize(): number {
-    return this.size;
-  }
-
+  /**
+   * Returns true if this stack is empty.
+   *
+   * @return true if this stack is empty; false otherwise
+   */
   public isEmpty(): boolean {
-    return this.size === 0;
+    return this.head === null;
   }
 
+  /**
+   * Returns the number of items in this stack.
+   *
+   * @return the number of items in this stack.
+   */
+  public size(): number {
+    return this.n;
+  }
+
+  /**
+   * Adds a value to this stack.
+   *
+   * @param val the value to add
+   */
   public push(val: T) {
-    const newNode = new Node(val);
-    newNode.next = this.head;
+    const head = this.head;
+    const newNode = new Node<T>();
+    newNode.val = val;
+    newNode.next = head;
     this.head = newNode;
-    this.size += 1;
+    this.n++;
   }
 
+  /**
+   * Removes and returns the value most recently added to this stack.
+   *
+   * @return the value most recently added
+   * @throws NoSuchElementException if this stack is empty
+   */
   public pop(): T {
-    if (this.size === 0) return null;
+    if (this.isEmpty())
+      throw new Error("NoSuchElementException: Stack underflow");
     const val = this.head.val;
     this.head = this.head.next;
-    this.size -= 1;
+    this.n--;
     return val;
+  }
+
+  /**
+   * Returns (but does not remove) the value most recently added to this stack.
+   *
+   * @return the value most recently added
+   * @throws NoSuchElementException if this stack is empty
+   */
+  public peek(): T {
+    if (this.isEmpty())
+      throw new Error("NoSuchElementException: Stack underflow");
+    return this.head.val;
   }
 }

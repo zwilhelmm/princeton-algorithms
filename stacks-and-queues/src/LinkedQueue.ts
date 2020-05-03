@@ -1,41 +1,84 @@
 "use strict";
 
 class Node<T> {
-  val: T;
+  val: T | null;
   next: Node<T> | null;
-  constructor(val: T) {
-    this.val = val;
+  constructor() {
+    this.val = null;
     this.next = null;
   }
 }
 
-export default class LinkedQueue<T> {
+export default class Queue<T> {
   head: Node<T>;
   tail: Node<T>;
-  size: number;
+  n: number;
 
+  /**
+   * Initializes an empty queue.
+   */
   constructor() {
     this.head = null;
     this.tail = null;
-    this.size = 0;
+    this.n = 0;
   }
 
+  /**
+   * Returns true if this queue is empty.
+   *
+   * @return {@code true} if this queue is empty; {@code false} otherwise
+   */
   public isEmpty(): boolean {
-    return this.size === 0;
+    return this.n === 0;
   }
 
+  /**
+   * Returns the number of items in this queue.
+   *
+   * @return the number of items in this queue
+   */
+  public size(): number {
+    return this.n;
+  }
+
+  /**
+   * Returns the value least recently added to this queue.
+   *
+   * @return the value least recently added to this queue
+   * @throws NoSuchElementException if this queue is empty
+   */
+  public peek(): T {
+    if (this.isEmpty())
+      throw new Error("NoSuchElementException: Queue underflow");
+    return this.head.val;
+  }
+
+  /**
+   * Adds a value to this queue.
+   *
+   * @param val the value to add
+   */
   public enqueue(val: T) {
-    const newNode = new Node(val);
+    const newNode = new Node<T>();
+    newNode.val = val;
+    newNode.next = null;
     this.tail.next = newNode;
     this.tail = newNode;
-    this.size += 1;
+    this.n++;
   }
 
+  /**
+   * Removes and returns the value on this queue that was least recently added.
+   *
+   * @return the value on this queue that was least recently added
+   * @throws NoSuchElementException if this queue is empty
+   */
   public dequeue(): T {
-    const currentHead = this.head;
+    if (this.isEmpty())
+      throw new Error("NoSuchElementException: Queue underflow");
     const val = this.head.val;
-    this.head = currentHead.next;
-    this.size -= 1;
+    this.head = this.head.next;
+    this.n--;
     return val;
   }
 }

@@ -24,7 +24,15 @@ describe("LinkedStack", function () {
     expect(list.getSize()).to.equal(0);
   });
 
-  it("should prevent popping negative elements", function () {
+  it("should be able to return the size of the stack", function () {
+    const list = new LinkedStack();
+    list.push(1);
+    list.push(2);
+
+    expect(list.getSize()).to.equal(2);
+  });
+
+  it("should prevent popping when stack is empty", function () {
     const list = new LinkedStack();
     list.push(1);
     list.pop();
