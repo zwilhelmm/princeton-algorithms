@@ -10,7 +10,7 @@ class Node<T> {
 }
 
 export default class Stack<T> {
-  head: Node<T>;
+  head: Node<T> | null;
   n: number;
 
   /**
@@ -30,11 +30,8 @@ export default class Stack<T> {
     return this.head === null;
   }
 
-  /**
-   * Returns the number of items in this stack.
-   *
-   * @return the number of items in this stack.
-   */
+  
+  
   public size(): number {
     return this.n;
   }
