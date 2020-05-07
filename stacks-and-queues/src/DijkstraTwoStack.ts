@@ -4,7 +4,7 @@ import Stack from "./Stack";
 
 /**
  * Evaluates (fully parenthesized) arithmetic expressions using Dijkstra's two-stack algorithm.
- * 
+ *
  * @param str the expression to evaluate
  * @returns the evaluation of the input string
  */
@@ -12,24 +12,33 @@ export default function evaluate(str: string): number {
   const operators = new Stack<string>();
   const values = new Stack<number>();
 
-  const dict = {
-    "+": (v: number): number => values.pop() + v,
-    "-": (v: number): number => values.pop() - v,
-    "*": (v: number): number => values.pop() * v,
-    "/": (v: number): number => values.pop() / v,
-    sqrt: (v: number): number => Math.sqrt(v),
-  };
+  const legend: Set<string> = new Set<string>(["+", "-", "*", "/", "sqrt"]);
 
-  for (let i = 0; i < str.length; i++) {
-    const current = str[i];
+  // We ignore the first parentheses in favor of the second.
+  const ignore = "(";
+  const delimiter = ")";
 
-    if (dict[current]) operators.push(current);
-    else if (current === "}") {
-      const operator = operators.pop();
-      const value = values.pop();
+  const splitStr = str.split(" ");
 
-      values.push(dict[operator](value));
-    } else values.push(Number.parseFloat(current));
+  for (let i = 0; i < splitStr.length; i++) {
+    const current: string = splitStr[i];
+    if (current === delimiter) {
+      const operator: string = operators.pop();
+      let value: number = values.pop();
+
+      if (operator === "+") value = values.pop() + value;
+      else if (operator === "-") value = values.pop() - value;
+      else if (operator === "*") value = values.pop() * value;
+      else if (operator === "/") value = values.pop() / value;
+      else if (operator === "sqrt") value = Math.sqrt(value);
+
+      values.push(value);
+    } else if (current === ignore) continue;
+    else if (legend.has(current)) {
+      operators.push(current);
+    } else {
+      values.push(parseFloat(current));
+    }
   }
 
   return values.pop();

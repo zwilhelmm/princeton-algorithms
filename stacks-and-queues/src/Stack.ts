@@ -1,10 +1,10 @@
 "use strict";
 
 class Node<T> {
-  val: T | null;
+  item: T;
   next: Node<T> | null;
-  constructor() {
-    this.val = null;
+  constructor(item: T) {
+    this.item = item;
     this.next = null;
   }
 }
@@ -24,56 +24,58 @@ export default class Stack<T> {
   /**
    * Returns true if this stack is empty.
    *
-   * @return true if this stack is empty; false otherwise
+   * @returns true if this stack is empty; false otherwise
    */
   public isEmpty(): boolean {
     return this.head === null;
   }
 
-  
-  
+  /**
+   * Returns the number of items in this stack.
+   *
+   * @returns the number of items in this stack
+   */
   public size(): number {
     return this.n;
   }
 
   /**
-   * Adds a value to this stack.
+   * Adds a item to this stack.
    *
-   * @param val the value to add
+   * @param item the item to add
    */
-  public push(val: T) {
+  public push(item: T) {
     const head = this.head;
-    const newNode = new Node<T>();
-    newNode.val = val;
+    const newNode = new Node<T>(item);
     newNode.next = head;
     this.head = newNode;
     this.n++;
   }
 
   /**
-   * Removes and returns the value most recently added to this stack.
+   * Removes and returns the item most recently added to this stack.
    *
-   * @return the value most recently added
+   * @returns the item most recently added
    * @throws NoSuchElementException if this stack is empty
    */
   public pop(): T {
-    if (this.isEmpty())
+    if (this.head === null)
       throw new Error("NoSuchElementException: Stack underflow");
-    const val = this.head.val;
+    const item = this.head.item;
     this.head = this.head.next;
     this.n--;
-    return val;
+    return item;
   }
 
   /**
-   * Returns (but does not remove) the value most recently added to this stack.
+   * Returns (but does not remove) the item most recently added to this stack.
    *
-   * @return the value most recently added
+   * @returns the item most recently added
    * @throws NoSuchElementException if this stack is empty
    */
   public peek(): T {
-    if (this.isEmpty())
+    if (this.head === null)
       throw new Error("NoSuchElementException: Stack underflow");
-    return this.head.val;
+    return this.head.item;
   }
 }

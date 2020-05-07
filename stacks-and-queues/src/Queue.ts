@@ -1,17 +1,17 @@
 "use strict";
 
 class Node<T> {
-  val: T | null;
+  item: T;
   next: Node<T> | null;
-  constructor() {
-    this.val = null;
+  constructor(item: T) {
+    this.item = item;
     this.next = null;
   }
 }
 
 export default class Queue<T> {
-  head: Node<T>;
-  tail: Node<T>;
+  head: Node<T> | null;
+  tail: Node<T> | null;
   n: number;
 
   /**
@@ -26,7 +26,7 @@ export default class Queue<T> {
   /**
    * Returns true if this queue is empty.
    *
-   * @return {@code true} if this queue is empty; {@code false} otherwise
+   * @returns {@code true} if this queue is empty; {@code false} otherwise
    */
   public isEmpty(): boolean {
     return this.n === 0;
@@ -35,50 +35,56 @@ export default class Queue<T> {
   /**
    * Returns the number of items in this queue.
    *
-   * @return the number of items in this queue
+   * @returns the number of items in this queue
    */
   public size(): number {
     return this.n;
   }
 
   /**
-   * Returns the value least recently added to this queue.
+   * Returns the item least recently added to this queue.
    *
-   * @return the value least recently added to this queue
+   * @returns the item least recently added to this queue
    * @throws NoSuchElementException if this queue is empty
    */
   public peek(): T {
-    if (this.isEmpty())
+    if (this.head === null)
       throw new Error("NoSuchElementException: Queue underflow");
-    return this.head.val;
+    return this.head.item;
   }
 
   /**
-   * Adds a value to this queue.
+   * Adds a item to this queue.
    *
-   * @param val the value to add
+   * @param item the item to add
    */
-  public enqueue(val: T) {
-    const newNode = new Node<T>();
-    newNode.val = val;
+  public enqueue(item: T) {
+    const newNode = new Node<T>(item);
     newNode.next = null;
-    this.tail.next = newNode;
-    this.tail = newNode;
-    this.n++;
+
+    if (this.tail === null) {
+      this.head = newNode;
+      this.tail = newNode;
+      this.n++;
+    } else {
+      this.tail.next = newNode;
+      this.tail = newNode;
+      this.n++;
+    }
   }
 
   /**
-   * Removes and returns the value on this queue that was least recently added.
+   * Removes and returns the item on this queue that was least recently added.
    *
-   * @return the value on this queue that was least recently added
+   * @returns the item on this queue that was least recently added
    * @throws NoSuchElementException if this queue is empty
    */
   public dequeue(): T {
-    if (this.isEmpty())
+    if (this.head === null)
       throw new Error("NoSuchElementException: Queue underflow");
-    const val = this.head.val;
+    const item = this.head.item;
     this.head = this.head.next;
     this.n--;
-    return val;
+    return item;
   }
 }
