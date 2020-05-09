@@ -16,22 +16,25 @@ import Queue from "./Queue";
  */
 export default function josephus(m: number, n: number) {
   const queue = new Queue<number>();
+  let result: Array<number> = [];
 
   // Initialize the queue.
   for (let i = 0; i < n; i++) {
-    queue.enqueue(n);
+    queue.enqueue(i);
   }
 
   while (!queue.isEmpty()) {
-    for (let i = 0; i < n - 1; i++) {
+    for (let i = 0; i < m - 1; i++) {
       queue.enqueue(queue.dequeue());
     }
-
-    console.log("Person eliminated this round: ", queue.dequeue());
+    const mth: number = queue.dequeue();
+    result.push(mth);
   }
+
+  return result;
 }
 
-export function josephusRecursive(m: number, n: number) {
+export function josephusRecursive(m: number, n: number): number {
   if (n === 1) return 1;
   else return ((m - 1 + josephusRecursive(m, n - 1)) % n) + 1;
 }

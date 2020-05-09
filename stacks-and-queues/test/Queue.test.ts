@@ -6,12 +6,12 @@ describe("Linked Queue Tests", function () {
   let queue: Queue<number>;
 
   beforeEach(function () {
-    queue = new Queue();
+    queue = new Queue<number>();
   });
 
   describe("isEmpty()", function () {
     it("should be able to tell if a queue is empty", function () {
-      expect(queue.isEmpty()).toBe(true);
+      expect(queue.isEmpty()).toEqual(true);
     });
   });
 
@@ -25,7 +25,7 @@ describe("Linked Queue Tests", function () {
     it("should be able to enqueue elements", function () {
       queue.enqueue(1);
 
-      expect(queue.isEmpty()).toBe(false);
+      expect(queue.isEmpty()).toEqual(false);
       expect(queue.size()).toEqual(1);
     });
   });
@@ -37,7 +37,7 @@ describe("Linked Queue Tests", function () {
       const actual: number = queue.dequeue();
 
       expect(actual).toEqual(1);
-      expect(queue.isEmpty()).toBe(false);
+      expect(queue.isEmpty()).toEqual(false);
       expect(queue.size()).toEqual(1);
     });
 

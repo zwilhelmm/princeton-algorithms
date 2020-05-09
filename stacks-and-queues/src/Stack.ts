@@ -59,8 +59,7 @@ export default class Stack<T> {
    * @throws NoSuchElementException if this stack is empty
    */
   public pop(): T {
-    if (this.head === null)
-      throw new Error("NoSuchElementException: Stack underflow");
+    if (!this.head) throw new Error("NoSuchElementException: Stack underflow");
     const item = this.head.item;
     this.head = this.head.next;
     this.n--;
@@ -74,8 +73,7 @@ export default class Stack<T> {
    * @throws NoSuchElementException if this stack is empty
    */
   public peek(): T {
-    if (this.head === null)
-      throw new Error("NoSuchElementException: Stack underflow");
+    if (!this.head) throw new Error("NoSuchElementException: Stack underflow");
     return this.head.item;
   }
 }

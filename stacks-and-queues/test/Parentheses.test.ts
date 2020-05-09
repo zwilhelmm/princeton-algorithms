@@ -7,7 +7,7 @@ describe("Parsing Parentheses Tests", function () {
     const first: string = "[()]{}{[()()]()}";
     const second: string = "[(])";
 
-    expect(parseParentheses(first)).toBe(true);
-    expect(parseParentheses(second)).toBe(false);
+    expect(parseParentheses(first)).toEqual(true);
+    expect(parseParentheses(second)).toEqual(false);
   });
 });

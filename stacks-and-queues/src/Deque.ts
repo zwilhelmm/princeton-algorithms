@@ -1,12 +1,18 @@
 "use strict";
 
 class Node<T> {
-  item: T | null;
+  item: T;
   next: Node<T> | null;
-  constructor() {
-    this.item = null;
+  constructor(item: T) {
+    this.item = item;
     this.next = null;
   }
+}
+
+interface NonEmptyQueue<T> {
+  head: Node<T>;
+  tail: Node<T>;
+  n: 1;
 }
 
 /**
@@ -51,7 +57,7 @@ export default class Deque<T> {
    * @returns {@code item} if found; {@code null} otherwise
    */
   public find(item: T): T | null {
-    if (this.isEmpty()) return null;
+    if (!this.head) return null;
 
     let currentNode = this.head;
     for (let i = 0; i < this.n; i++) {
@@ -68,9 +74,9 @@ export default class Deque<T> {
    * @param item the item to search for
    * @returns {@code item} if found; {@code node} if we are not at the end of the deque, {@code null} otherwise, if item is not found
    */
-  private findRecursiveHelper(node: Node<T>, item: T): T | null {
+  private findRecursiveHelper(node: Node<T>, item: T): T | null | undefined {
     if (node.item === item) return item;
-    if (node.next === null) return null;
+    if (!node.next) return null;
     else this.findRecursiveHelper(node.next, item);
   }
 
@@ -82,8 +88,10 @@ export default class Deque<T> {
    * @returns {@code item} if found; {@code node} if we are not at the end of the deque, {@code null} otherwise, if item is not found
    */
   public findRecursive(item: T): T | null {
-    if (this.isEmpty()) return null;
-    return this.findRecursiveHelper(this.head, item);
+    if (!this.head) return null;
+
+    const result = this.findRecursiveHelper(this.head, item);
+    return result ? result : null;
   }
 
   /**
@@ -92,10 +100,7 @@ export default class Deque<T> {
    * @param item the item to add
    */
   public addFirst(item: T) {
-    if (item === null)
-      throw new Error("IllegalArgumentException: cannot add null items");
-    const newNode = new Node<T>();
-    newNode.item = item;
+    const newNode = new Node<T>(item);
 
     if (this.isEmpty()) {
       newNode.next = null;
@@ -115,14 +120,10 @@ export default class Deque<T> {
    * @param item the item to add
    */
   public addLast(item: T) {
-    if (item === null)
-      throw new Error("IllegalArgumentException: cannot add null items");
-
-    const newNode = new Node<T>();
-    newNode.item = item;
+    const newNode = new Node<T>(item);
     newNode.next = null;
 
-    if (this.isEmpty()) {
+    if (!this.tail) {
       this.head = newNode;
       this.tail = newNode;
     } else {
@@ -138,7 +139,7 @@ export default class Deque<T> {
    * @returns {@code item} if the item is found; {@code false} otherwise
    */
   public removeFirst(): T | null {
-    if (this.isEmpty())
+    if (!this.head)
       throw new Error("NoSuchElementException: cannot remove from empty deque");
 
     const item = this.head.item;
@@ -155,19 +156,32 @@ export default class Deque<T> {
    * @returns {@code item} if the item is found; {@code false} otherwise
    */
   public removeLast(): T {
-    if (this.isEmpty())
+    if (!this.head || !this.tail)
       throw new Error("NoSuchElementException: cannot remove from empty deque");
 
-    const item = this.tail.item;
+    // If the list has only one item, we return just that.
+    if (this.head && !this.head.next) {
+      const item: T = this.head.item;
+      this.head = null;
+      this.tail = null;
+      this.n--;
+      return item;
+    } else {
+      const item: T | null = this.tail.item;
 
-    let currentNode = this.head;
-    for (let i = 0; i < this.n - 1; i++) {
-      currentNode = currentNode.next;
+      let current = this.head.next;
+      let previous = this.head;
+
+      while (current != null) {
+        previous = current;
+        current = current.next;
+      }
+
+      this.tail = previous;
+      previous.next = null;
+      this.n--;
+
+      return item;
     }
-
-    currentNode.next = null;
-    this.n--;
-
-    return item;
   }
 }

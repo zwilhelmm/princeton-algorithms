@@ -12,7 +12,9 @@
   "license": "ISC",
   "dependencies": {
     "@babel/preset-typescript": "^7.9.0",
+    "@types/faker": "^4.1.11",
     "@types/jest": "^25.2.1",
+    "faker": "^4.1.0",
     "husky": "^4.2.5",
     "jest": "^26.0.1",
     "jest-watch-master": "^1.0.0",

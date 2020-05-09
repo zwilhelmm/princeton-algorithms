@@ -6,12 +6,12 @@ describe("Linked Stack Tests", function () {
   let stack: Stack<number>;
 
   beforeEach(function () {
-    stack = new Stack();
+    stack = new Stack<number>();
   });
 
   describe("isEmpty()", function () {
     it("should be able to tell if a stack is empty", function () {
-      expect(stack.isEmpty()).toBe(true);
+      expect(stack.isEmpty()).toEqual(true);
     });
   });
 
@@ -25,7 +25,7 @@ describe("Linked Stack Tests", function () {
     it("should be able to push elements", function () {
       stack.push(1);
 
-      expect(stack.isEmpty()).toBe(false);
+      expect(stack.isEmpty()).toEqual(false);
       expect(stack.size()).toEqual(1);
     });
   });
@@ -37,7 +37,7 @@ describe("Linked Stack Tests", function () {
       const actual: number = stack.pop();
 
       expect(actual).toEqual(2);
-      expect(stack.isEmpty()).toBe(false);
+      expect(stack.isEmpty()).toEqual(false);
       expect(stack.size()).toEqual(1);
     });
 

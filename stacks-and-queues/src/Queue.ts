@@ -48,8 +48,7 @@ export default class Queue<T> {
    * @throws NoSuchElementException if this queue is empty
    */
   public peek(): T {
-    if (this.head === null)
-      throw new Error("NoSuchElementException: Queue underflow");
+    if (!this.head) throw new Error("NoSuchElementException: Queue underflow");
     return this.head.item;
   }
 
@@ -80,8 +79,7 @@ export default class Queue<T> {
    * @throws NoSuchElementException if this queue is empty
    */
   public dequeue(): T {
-    if (this.head === null)
-      throw new Error("NoSuchElementException: Queue underflow");
+    if (!this.head) throw new Error("NoSuchElementException: Queue underflow");
     const item = this.head.item;
     this.head = this.head.next;
     this.n--;

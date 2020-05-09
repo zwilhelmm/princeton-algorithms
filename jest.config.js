@@ -1,13 +1,10 @@
 module.exports = {
-  displayName: {
-    name: "princeton-algorithms",
-    color: "bgBlue",
-  },
   preset: "ts-jest",
   testEnvironment: "node",
   collectCoverage: true,
   collectCoverageFrom: [
     "**/*.{js,jsx,ts,tsx}",
+    // "!**/types/**",
     "!**/node_modules/**",
     "!**/coverage/**",
     "!**/jest.config.js",
@@ -17,9 +14,10 @@ module.exports = {
       branches: 80,
       functions: 80,
       lines: 80,
-      statements: -10,
+      // statements: -10,
     },
   },
+  testPathIgnorePatterns: ["/node_modules/"],
   verbose: true,
   watchPlugins: [
     "jest-watch-master",
